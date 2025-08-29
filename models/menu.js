@@ -30,5 +30,6 @@ const menuSchema=new mongoose.Schema({
         requird:true,
     }
 })
+// this is for testing github
 const Menu=mongoose.model('Menu',menuSchema);
 module.exports=Menu;
