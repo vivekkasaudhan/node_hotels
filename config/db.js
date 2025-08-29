@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const mongoUrl = 'mongodb://localhost:27017/hotels';
+require('dotenv').config();
+// const mongoUrl =process.env.mongoLocalUrl;
+const mongoUrl=process.env.DB_URL; 
 
 // Connect to MongoDB
 mongoose.connect(mongoUrl, {

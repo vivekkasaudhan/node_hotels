@@ -3,6 +3,8 @@ const app = express();
 const Person = require("./models/person"); // Model should be capitalized
 const db = require("./config/db");
 const Menu=require("./models/menu")
+require('dotenv').config();
+const port=process.env.PORT||3000
 
 // Use built-in JSON parser
 app.use(express.json());
@@ -16,8 +18,8 @@ const personRoutes=require("./routes/PersonRoutes")
 
 app.use('/menu',menuRoutes);
 app.use('/person',personRoutes);
-
-app.listen(3000, () => {
+ 
+app.listen(port, () => {
     console.log("Server running on port 3000");
 });
 
