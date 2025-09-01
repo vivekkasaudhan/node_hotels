@@ -1,27 +1,34 @@
 const express = require("express");
 const app = express();
-const Person = require("./models/person"); // Model should be capitalized
 const db = require("./config/db");
-const Menu=require("./models/menu")
-require('dotenv').config();
-const port=process.env.PORT||3000
+const Menu = require("./models/menu");
+require("dotenv").config();
+const passport = require("./auth");
 
-// Use built-in JSON parser
+app.use(passport.initialize());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send("Welcome");
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+
+const port = process.env.PORT || 3000;
+
+const localAuthMiddleware = passport.authenticate("local", { session: false });
+
+app.get("/", localAuthMiddleware, (req, res) => {
+  res.send("Welcome");
 });
 
-const menuRoutes=require("./routes/MenuRoutes")
-const personRoutes=require("./routes/PersonRoutes")
+const menuRoutes = require("./routes/MenuRoutes");
+const personRoutes = require("./routes/PersonRoutes");
 
-app.use('/menu',menuRoutes);
-app.use('/person',personRoutes);
- 
+app.use("/menu", menuRoutes);
+app.use("/person",  personRoutes);
+
 app.listen(port, () => {
-    console.log("Server running on port 3000");
+  console.log(`Server running on port ${port}`);
 });
+
 
 // app.post('/person', async (req, res) => {
 //     try {
@@ -46,7 +53,7 @@ app.listen(port, () => {
 //         console.log(err);
 //         res.status(500).json({ error: err.message });
 //     }
-   
+
 // })
 // app.post('/menu',async(req,res)=>{
 //     try {
@@ -71,7 +78,7 @@ app.listen(port, () => {
 //         console.log(err);
 //         res.status(500).json({error:err.message});
 //     }
-   
+
 // })
 // app.get('/menu/:workType',async(req,res)=>{
 //     try{
@@ -86,13 +93,12 @@ app.listen(port, () => {
 //                  console.log(err);
 //         res.status(500).json({error:err.message});
 //             }
-             
+
 //     }
 //     catch(err)
 //     {
 //         console.log(err);
 //         res.status(500).json({error:err.message});
 //     }
-   
-// })
 
+// })
